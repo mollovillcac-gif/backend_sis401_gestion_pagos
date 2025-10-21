@@ -1,0 +1,4 @@
+# Ignorar archivos generados
+node_modules/
+dist/
+coverage/
