@@ -19,9 +19,10 @@ async function bootstrap() {
 
     // Configuración de CORS
     app.enableCors({
-        origin: ['https://frontend-sis401-gestion-pagos.onrender.com/api/v1'],
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-        credentials: true,
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        allowedHeaders: 'Content-Type, Authorization',
     });
 
     // todo esto que pondre es del swagger
