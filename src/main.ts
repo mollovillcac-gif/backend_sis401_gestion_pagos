@@ -19,7 +19,7 @@ async function bootstrap() {
 
     // Configuración de CORS
     app.enableCors({
-        origin: ['https://frontend-sis401-gestion-pagos.onrender.com'],
+        origin: ['https://frontend-sis401-gestion-pagos.onrender.com/api/v1'],
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         credentials: true,
     });
