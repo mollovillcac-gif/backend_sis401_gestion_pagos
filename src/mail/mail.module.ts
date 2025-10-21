@@ -7,40 +7,32 @@ import { MailService } from './mail.service';
 
 @Module({
     imports: [
-        ConfigModule, // asegúrate de tener ConfigModule.forRoot({ isGlobal: true }) en AppModule
+        ConfigModule,
         MailerModule.forRootAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: async (config: ConfigService) => {
-                const port = Number(config.get<string>('MAIL_PORT'));
-                const secure = String(config.get<string>('MAIL_SECURE')).toLowerCase() === 'true';
-                return {
-                    transport: {
-                        host: config.get<string>('MAIL_HOST'), // smtp.gmail.com
-                        port, // 465 o 587
-                        secure, // 465->true, 587->false
-                        auth: {
-                            user: config.get<string>('MAIL_USER'),
-                            pass: config.get<string>('MAIL_PASSWORD'),
-                        },
-                        // 👇 ayuda en Render/otras nubes
-                        family: 4, // fuerza IPv4
-                        connectionTimeout: 15000,
-                        greetingTimeout: 10000,
-                        socketTimeout: 20000,
-                        // tls: { rejectUnauthorized: false }, // déjalo comentado; solo si el log lo pide
+            useFactory: async (config: ConfigService) => ({
+                transport: {
+                    host: config.get('MAIL_HOST'),
+                    port: Number(config.get('MAIL_PORT')),
+                    secure: String(config.get('MAIL_SECURE')).toLowerCase() === 'true',
+                    auth: {
+                        user: config.get('MAIL_USER'),
+                        pass: config.get('MAIL_PASSWORD'),
                     },
-                    defaults: {
-                        from: config.get<string>('MAIL_FROM'), // "Cargas Pafunncio" <correo@gmail.com>
-                    },
-                    template: {
-                        // Usa la carpeta compilada en dist/mail/templates
-                        dir: join(__dirname, 'templates'),
-                        adapter: new HandlebarsAdapter(),
-                        options: { strict: true },
-                    },
-                };
-            },
+                    family: 4,
+                    connectionTimeout: 15000,
+                    greetingTimeout: 10000,
+                    socketTimeout: 20000,
+                },
+                defaults: { from: config.get('MAIL_FROM') },
+                // En runtime __dirname = dist/mail  → dist/mail/templates
+                template: {
+                    dir: join(__dirname, 'templates'),
+                    adapter: new HandlebarsAdapter(),
+                    options: { strict: true },
+                },
+            }),
         }),
     ],
     providers: [MailService],
