@@ -25,6 +25,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
       entities: [__dirname + '*/**/entities/*.(ts|js)'], // entities es la ruta donde se encuentran las entidades de TypeORM
       synchronize: true, // synchronize es para sincronizar las entidades con la base de datos
       autoLoadEntities: true, // autoLoadEntities es para cargar automáticamente las entidades
+      ssl: {
+        rejectUnauthorized: false,
+      },
       extra: {
         timezone: 'America/La_Paz'
       }
